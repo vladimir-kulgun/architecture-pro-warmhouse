@@ -1,0 +1,12 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+System_Boundary(c1, "Теплый дом") {
+    Container(webapp, "Веб приложение", "", "Пользовательский интерфейс")
+    Container(backend, "Приложение", "Go", "Обрабатывает запросы пользователей")
+    ContainerDb(database, "База данных", "PostreSQL", "Хранит данные пользователей")
+}
+
+Rel(webapp, backend, "")
+Rel(backend, database, "")
+
+@enduml
