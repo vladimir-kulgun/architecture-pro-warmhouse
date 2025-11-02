@@ -38,8 +38,8 @@
 
 ### 5. Визуализация контекста системы — диаграмма С4
 
-- [Контекст](/schemas/as-is/context.puml)
-- [Контейнер](/schemas/as-is/container.puml)
+- [Контекст](/schemas/AS-IS/context.puml)
+- [Контейнер](/schemas/AS-IS/container.puml)
 
 # Задание 2. Проектирование микросервисной архитектуры
 
