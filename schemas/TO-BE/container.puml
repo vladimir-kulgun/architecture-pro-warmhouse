@@ -4,7 +4,6 @@
 Person(engineer, "Специалист по установке")
 Person(user, "Пользователь")
 
-System_Boundary(smartHome, "Умный дом") {
 
   System_Boundary(front_end, "Пользовательский интерфейс") {
     Container(warm_house_fe, "Установка отопления", "WebApp")
@@ -40,7 +39,6 @@ System_Boundary(smartHome, "Умный дом") {
     Container(script_service, "ScriptService", "")
     ContainerDb(script_db, "Хранилище скриптов.", "PostgresSQL")
   }
-}
 
 Rel(user, heating_fe, "Управление отоплением")
 Rel(engineer, warm_house_fe, "Подключение системы отопления")
