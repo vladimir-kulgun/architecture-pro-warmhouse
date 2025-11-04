@@ -11,6 +11,7 @@ System_Boundary(smartHome, "Умный дом") {
     Container(heating_fe, "Отопление", "Mobile/SPA")
 
     Container(sensors_fe, "Датчики", "Mobile/SPA")
+    Container(iot_fe, "Умные вещи", "Mobile/SPA")
   }
   
   System_Boundary(heating_be, "Отопление") {
@@ -22,6 +23,12 @@ System_Boundary(smartHome, "Умный дом") {
     Container(sensors_service, "SensorService", "")
     ContainerDb(sensors_db, "Настройки датчиков. Архив показаний", "PostgresSQL")
   }
+
+  System_Boundary(iot_be, "Умные вещи") {
+    Container(iot_service, "IOTService", "")
+    ContainerDb(iot_db, "Настройки умных вещей.", "PostgresSQL")
+  }
+
 }
 
 Rel(user, heating_fe, "Управление отоплением")
@@ -37,5 +44,11 @@ System_Ext(sensors, "Датчики: тепература, влажность и
 Rel(sensors_fe, sensors_service, "")
 Rel(sensors_service, sensors_db, "")
 Rel(sensors_service, sensors, "Чтение показаний/Управление")
+
+Rel(user, iot_fe, "Управление умными вещами")
+System_Ext(iot, "Свет, ворота и т.д.", "")
+Rel(iot_fe, iot_service, "")
+Rel(iot_service, iot_db, "")
+Rel(iot_service, iot, "Управление")
 
 @enduml
