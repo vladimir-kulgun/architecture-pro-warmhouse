@@ -13,6 +13,7 @@ System_Boundary(smartHome, "Умный дом") {
     Container(sensors_fe, "Датчики", "Mobile/SPA")
     Container(iot_fe, "Умные вещи", "Mobile/SPA")
     Container(monitoring_fe, "Мониторинг", "Mobile/SPA")
+    Container(script_fe, "Программирование", "Mobile/SPA")
   }
   
   System_Boundary(heating_be, "Отопление") {
@@ -35,7 +36,10 @@ System_Boundary(smartHome, "Умный дом") {
     ContainerDb(monitoring_db, "Архив показаний.", "PostgresSQL")
   }
 
-
+  System_Boundary(script_be, "Программирование") {
+    Container(script_service, "ScriptService", "")
+    ContainerDb(script_db, "Хранилище скриптов.", "PostgresSQL")
+  }
 }
 
 Rel(user, heating_fe, "Управление отоплением")
@@ -62,5 +66,12 @@ Rel(user, monitoring_fe, "Мониторинг показаний")
 Rel(monitoring_fe, monitoring_service, "")
 Rel(monitoring_service, sensors_service, "")
 Rel(monitoring_service, monitoring_db, "")
+
+Rel(user, script_fe, "Программирование системы для управления различными модулями")
+Rel(script_fe, script_service, "")
+Rel(script_service, sensors_service, "")
+Rel(script_service, heating_service, "")
+Rel(script_service, iot_service, "")
+Rel(script_service, script_db, "")
 
 @enduml
