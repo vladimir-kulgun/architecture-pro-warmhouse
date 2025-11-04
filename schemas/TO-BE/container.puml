@@ -1,0 +1,33 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(engineer, "Специалист по установке")
+Person(user, "Пользователь")
+
+System_Boundary(smartHome, "Умный дом") {
+
+  System_Boundary(front_end, "Пользовательский интерфейс") {
+    Container(warm_house_fe, "Установка отопления", "WebApp")
+    Container(heating_fe, "Отопление", "Mobile/WebApp")
+  }
+  
+  System_Boundary(heating, "Отопление") {
+    Container(heating_be, "HeatingService", "")
+    ContainerDb(heating_db, "Настройки отопления", "PostgresSQL")
+  }
+  
+  
+}
+
+System_Ext(heating_system, "Система отопления", "Выполняет отопительную функцию")
+
+Rel(user, heating_fe, "Управление отоплением")
+Rel(engineer, warm_house_fe, "Подключение системы отопления")
+
+Rel(heating_be, heating_system, "Управление")
+Rel(heating_fe, heating_be, "")
+Rel(warm_house_fe, heating_be, "")
+Rel(heating_be, heating_db, "")
+
+
+@enduml
