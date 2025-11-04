@@ -8,26 +8,34 @@ System_Boundary(smartHome, "Умный дом") {
 
   System_Boundary(front_end, "Пользовательский интерфейс") {
     Container(warm_house_fe, "Установка отопления", "WebApp")
-    Container(heating_fe, "Отопление", "Mobile/WebApp")
+    Container(heating_fe, "Отопление", "Mobile/SPA")
+
+    Container(sensors_fe, "Датчики", "Mobile/SPA")
   }
   
-  System_Boundary(heating, "Отопление") {
-    Container(heating_be, "HeatingService", "")
+  System_Boundary(heating_be, "Отопление") {
+    Container(heating_service, "HeatingService", "")
     ContainerDb(heating_db, "Настройки отопления", "PostgresSQL")
   }
-  
-  
-}
 
-System_Ext(heating_system, "Система отопления", "Выполняет отопительную функцию")
+  System_Boundary(sensors_be, "Датчики") {
+    Container(sensors_service, "SensorService", "")
+    ContainerDb(sensors_db, "Настройки датчиков. Архив показаний", "PostgresSQL")
+  }
+}
 
 Rel(user, heating_fe, "Управление отоплением")
 Rel(engineer, warm_house_fe, "Подключение системы отопления")
+System_Ext(heating_system, "Система отопления", "Выполняет отопительную функцию")
+Rel(heating_fe, heating_service, "")
+Rel(warm_house_fe, heating_service, "")
+Rel(heating_service, heating_db, "")
+Rel(heating_service, heating_system, "Управление")
 
-Rel(heating_be, heating_system, "Управление")
-Rel(heating_fe, heating_be, "")
-Rel(warm_house_fe, heating_be, "")
-Rel(heating_be, heating_db, "")
-
+Rel(user, sensors_fe, "Мониторинг/управление датчиками")
+System_Ext(sensors, "Датчики: тепература, влажность и т.д.", "")
+Rel(sensors_fe, sensors_service, "")
+Rel(sensors_service, sensors_db, "")
+Rel(sensors_service, sensors, "Чтение показаний/Управление")
 
 @enduml
