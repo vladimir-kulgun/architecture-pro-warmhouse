@@ -1,0 +1,42 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+System_Boundary(heating_be, "Умные вещи") {
+  System_Boundary(iotService, "IOTService") {
+    System_Boundary(api, "Api Layer") {
+      Container(adminController, "Admin Controller", "Подключение умного устройства к системы")
+      Container(controlController, "Control Controller", "Управление умным устройством")
+    }
+
+    System_Boundary(busnessLogic, "Business Logic") {
+      Container(adminService, "Admin Service", "")
+      Container(controlService, "Control Service", "")
+    }
+
+    System_Boundary(access, "Access Layer") {
+      Container(lampClient, "Lamp Client", "Логика доступа к лампочке")
+      Container(gateClient, "Lamp Client", "Логика доступа к воротам")
+      Container(repositoryLayer, "Repository Layer", "Логика доступа к данным")
+    }
+  }
+  ContainerDb(db, "Настройки умных устройств", "PostgresSQL")
+}
+
+System_Ext(iot_lamp, "Лампочка", "")
+System_Ext(iot_gate, "Ворота", "")
+
+Rel(adminController, adminService, "")
+Rel(adminService, repositoryLayer, "")
+Rel(adminService, lampClient, "")
+Rel(adminService, gateClient, "")
+
+Rel(controlController, controlService, "")
+Rel(controlService, repositoryLayer, "")
+Rel(controlService, lampClient, "")
+Rel(controlService, gateClient, "")
+
+Rel(repositoryLayer, db, "")
+Rel(lampClient, iot_lamp, "")
+Rel(gateClient, iot_gate, "")
+
+@enduml

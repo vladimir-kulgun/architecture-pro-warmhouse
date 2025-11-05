@@ -55,6 +55,7 @@
 **Диаграмма компонентов (Components)**
 
 - [HeatingService](/schemas/TO-BE/c3_HeatingService.puml)
+- [IOTService](/schemas/TO-BE/c3_IOTService.puml)
 
 **Диаграмма кода (Code)**
 
