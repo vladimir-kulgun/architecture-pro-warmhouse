@@ -1,0 +1,42 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+System_Boundary(be, "Датчики") {
+  System_Boundary(service, "SensorService") {
+    System_Boundary(api, "Api Layer") {
+      Container(adminController, "Admin Controller", "Подключение датичика к системы")
+      Container(measurementController, "Measurement Controller", "Чтение показаний")
+    }
+
+    System_Boundary(busnessLogic, "Business Logic") {
+      Container(adminService, "Admin Service", "")
+      Container(measurementService, "Measurement Service", "")
+    }
+
+    System_Boundary(access, "Access Layer") {
+      Container(temperatureClient, "Temperature Client", "Логика доступа к датчику температуры")
+      Container(humidityClient, "Humidity Client", "Логика доступа к датчику влажности")
+      Container(repositoryLayer, "Repository Layer", "Логика доступа к данным")
+    }
+  }
+  ContainerDb(db, "Настройки умных устройств", "PostgresSQL")
+}
+
+System_Ext(temperatureSensor, "Температура", "")
+System_Ext(humiditySensor, "Влажность", "")
+
+Rel(adminController, adminService, "")
+Rel(adminService, repositoryLayer, "")
+Rel(adminService, temperatureClient, "")
+Rel(adminService, humidityClient, "")
+
+Rel(measurementController, measurementService, "")
+Rel(measurementService, repositoryLayer, "")
+Rel(measurementService, temperatureClient, "")
+Rel(measurementService, humidityClient, "")
+
+Rel(repositoryLayer, db, "")
+Rel(temperatureClient, temperatureSensor, "")
+Rel(humidityClient, humiditySensor, "")
+
+@enduml
