@@ -54,7 +54,7 @@
 
 **Диаграмма компонентов (Components)**
 
-Добавьте диаграмму для каждого из выделенных микросервисов.
+- [HeatingService](/schemas/TO-BE/c3_HeatingService.puml)
 
 **Диаграмма кода (Code)**
 

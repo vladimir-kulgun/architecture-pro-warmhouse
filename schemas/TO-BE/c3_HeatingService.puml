@@ -1,0 +1,39 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+System_Boundary(heating_be, "Отопление") {
+  System_Boundary(heatingService, "HeatingService") {
+    System_Boundary(api, "Api Layer") {
+      Container(adminController, "Admin Controller", "Подключение системы отопления к системе")
+      Container(controlController, "Control Controller", "Управление системой отопления")
+    }
+
+    System_Boundary(busnessLogic, "Business Logic") {
+      Container(adminService, "Admin Service", "")
+      Container(controlService, "Control Service", "")
+    }
+
+    System_Boundary(access, "Access Layer") {
+      Container(heatingClient, "Heating Client", "Логика доступа к системе отопления")
+      Container(repositoryLayer, "Repository Layer", "Логика доступа к данным")
+    }
+  }
+  ContainerDb(heating_db, "Настройки отопления", "PostgresSQL")
+}
+
+System_Ext(heating_system, "Система отопления", "Выполняет отопительную функцию")
+
+Rel(adminController, adminService, "")
+Rel(adminService, repositoryLayer, "")
+Rel(adminService, heatingClient, "")
+
+Rel(controlController, controlService, "")
+Rel(controlService, repositoryLayer, "")
+Rel(controlService, heatingClient, "")
+
+Rel(repositoryLayer, heating_db, "")
+Rel(heatingClient, heating_system, "")
+    
+
+
+@enduml
