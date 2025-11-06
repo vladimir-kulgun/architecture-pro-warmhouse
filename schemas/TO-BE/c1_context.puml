@@ -6,15 +6,13 @@ Person(engineer, "Специалист по установке")
 
 System(smart_house, "Умный дом", "Позволяет мониторить/управлять экосистему дома")
 System_Ext(heating_system, "Система отопления", "Выполняет отопительную функцию")
-System_Ext(temperature_sensors, "Датчики", "Температура, влажность и прочее")
-System_Ext(iot_sensors, "Умные вещи", "Лампочки, ворота")
+System_Ext(iot_sensors, "Умные вещи", "Датчики температуры, влажности. Лампочки, ворота.")
 
 Rel(user, smart_house, "Управление")
 Rel(user, smart_house, "Мониторинг")
 Rel(engineer, smart_house, "Подключение системы отопления")
 
 Rel(smart_house, heating_system, "Управление")
-Rel(smart_house, temperature_sensors, "Мониторинг / архивация")
-Rel(smart_house, iot_sensors, "Управление")
+Rel(smart_house, iot_sensors, "Управление, мониторинг")
 
 @enduml

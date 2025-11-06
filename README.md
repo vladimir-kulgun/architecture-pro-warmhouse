@@ -56,7 +56,7 @@
 
 - [HeatingService](/schemas/TO-BE/c3_HeatingService.puml)
 - [IOTService](/schemas/TO-BE/c3_IOTService.puml)
-- [SensorService](/schemas/TO-BE/c3_SensorService.puml)
+- [MonitoringService](/schemas/TO-BE/c3_MonitoringService.puml)
 
 **Диаграмма кода (Code)**
 

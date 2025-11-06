@@ -1,7 +1,7 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-System_Boundary(heating_be, "Умные вещи") {
+System_Boundary(be, "Умные вещи") {
   System_Boundary(iotService, "IOTService") {
     System_Boundary(api, "Api Layer") {
       Container(adminController, "Admin Controller", "Подключение умного устройства к системы")
@@ -15,28 +15,37 @@ System_Boundary(heating_be, "Умные вещи") {
 
     System_Boundary(access, "Access Layer") {
       Container(lampClient, "Lamp Client", "Логика доступа к лампочке")
-      Container(gateClient, "Lamp Client", "Логика доступа к воротам")
-      Container(repositoryLayer, "Repository Layer", "Логика доступа к данным")
+      Container(temperatureClient, "Temperature Client", "Логика доступа к датчику температуры")
+      Container(repository, "Repository", "Логика доступа к данным")
     }
   }
   ContainerDb(db, "Настройки умных устройств", "PostgresSQL")
+
+  System_Boundary(iotServiceSubscriber, "IOTServiceSubscriber") {
+    System_Boundary(handlerLayer, "Handler") {
+      Container(dataHandler, "DataHandler", "")
+  }
 }
 
 System_Ext(iot_lamp, "Лампочка", "")
-System_Ext(iot_gate, "Ворота", "")
+System_Ext(iot_temperature_sensor, "Датчик температуры", "")
+ContainerQueue(que_kafka, "Очередь", "")
 
 Rel(adminController, adminService, "")
-Rel(adminService, repositoryLayer, "")
+Rel(adminService, repository, "")
 Rel(adminService, lampClient, "")
-Rel(adminService, gateClient, "")
+Rel(adminService, temperatureClient, "")
 
 Rel(controlController, controlService, "")
-Rel(controlService, repositoryLayer, "")
+Rel(controlService, repository, "")
 Rel(controlService, lampClient, "")
-Rel(controlService, gateClient, "")
+Rel(controlService, temperatureClient, "")
 
-Rel(repositoryLayer, db, "")
+Rel(repository, db, "")
 Rel(lampClient, iot_lamp, "")
-Rel(gateClient, iot_gate, "")
+Rel(temperatureClient, iot_temperature_sensor, "")
+
+Rel(iot_temperature_sensor, dataHandler, "Отправляет данные")
+Rel(dataHandler, que_kafka, "Пишет в очередь")
 
 @enduml
