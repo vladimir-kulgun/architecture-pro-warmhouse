@@ -76,11 +76,11 @@
 
 ### 2. Документация API
 
-- [Heat System Admin API](/schemas/TO-BE/heat-system-admin.yaml)
-- [Heat System API](/schemas/TO-BE/heat-system.yaml)
-- [Devices API](/schemas/TO-BE/devices.yaml)
-- [Scripts API](/schemas/TO-BE/scripts.yaml)
-- [Monitoring API](/schemas/TO-BE/monitoring.yaml)
+- [Heat System Admin API](/schemas/TO-BE/api/heat-system-admin.yaml)
+- [Heat System API](/schemas/TO-BE/api/heat-system.yaml)
+- [Devices API](/schemas/TO-BE/api/devices.yaml)
+- [Scripts API](/schemas/TO-BE/api/scripts.yaml)
+- [Monitoring API](/schemas/TO-BE/api/monitoring.yaml)
 
 # Задание 5. Работа с docker и docker-compose
 
