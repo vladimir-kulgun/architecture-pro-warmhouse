@@ -3,26 +3,27 @@
 
 package api {
   package DTO {
-    enum SystemOfMeasure {
+    enum TemperatureSystemOfMeasure {
       celcius,
       farenheit
       }
 
-    struct Measurement {
+    struct Temperature {
       value: double
       systemOfMeasure: SystemOfMeasure
+      dateTime: DateTime
     }
   }
   
   class TemperatureController {
-      + getLatest(sensorId: guid, systemOfMeasure = celcius): Measurement
-      + getHistory(sensorId: guid, systemOfMeasure = celcius, startDate: DateTime, endDate: DateTime): Measurement[]
+      + getLatest(sensorId: guid, systemOfMeasure = celcius): Temperature
+      + getHistory(sensorId: guid, systemOfMeasure = celcius, startDate: DateTime, endDate: DateTime): Temperature[]
   }
 }
 
 package busnes_layer {
   class TemperatureService {
-    getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Measurement[]
+    getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Temperature[]
   }
 }
 
@@ -34,7 +35,7 @@ package handlers {
 
 package access_layer {
   class TemperatureRepository {
-    + getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Measurement[]
+    + getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Temperature[]
   }
 }
 

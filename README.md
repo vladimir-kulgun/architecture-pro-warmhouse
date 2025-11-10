@@ -61,7 +61,7 @@
 
 **Диаграмма кода (Code)**
 
-Добавьте одну диаграмму или несколько.
+- [MonitoringService](/schemas/TO-BE/c4_MonitoringService.puml)
 
 # Задание 3. Разработка ER-диаграммы
 
