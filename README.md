@@ -71,11 +71,16 @@
 
 ### 1. Тип API
 
-Укажите, какой тип API вы будете использовать для взаимодействия микросервисов. Объясните своё решение.
+- Rest Api - доступ к микросервисам, для того чтобы сразу получать статус (успех/ошибка) чтения/записи данных
+- Async Api - получения данных из очереди, данные могут идти непрерывным потоком или с паузами.
 
 ### 2. Документация API
 
-Здесь приложите ссылки на документацию API для микросервисов, которые вы спроектировали в первой части проектной работы. Для документирования используйте Swagger/OpenAPI или AsyncAPI.
+- [Heat System Admin API](/schemas/TO-BE/heat-system-admin.yaml)
+- [Heat System API](/schemas/TO-BE/heat-system.yaml)
+- [Devices API](/schemas/TO-BE/devices.yaml)
+- [Scripts API](/schemas/TO-BE/scripts.yaml)
+- [Monitoring API](/schemas/TO-BE/monitoring.yaml)
 
 # Задание 5. Работа с docker и docker-compose
 

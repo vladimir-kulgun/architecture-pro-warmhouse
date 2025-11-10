@@ -1,0 +1,146 @@
+openapi: 3.0.1
+info:
+  title: Heat Systems Admin API
+  version: 1.0.0
+  description: API for managing heat systems in the admin section. Requires Bearer token authentication.
+servers:
+  - url: https://api.example.com
+security:
+  - BearerAuth: []
+
+paths:
+  /api/admin/heatsystems:
+    get:
+      summary: Get all heat systems
+      operationId: getHeatSystems
+      tags:
+        - HeatSystems
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of heat systems
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HeatSystem'
+
+    post:
+      summary: Create a new heat system
+      operationId: createHeatSystem
+      tags:
+        - HeatSystems
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HeatSystemCreate'
+      responses:
+        '201':
+          description: Heat system created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeatSystem'
+
+  /api/admin/heatsystems/{houseId}:
+    get:
+      summary: Get a heat system by houseId
+      operationId: getHeatSystemById
+      tags:
+        - HeatSystems
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: houseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single heat system
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeatSystem'
+        '404':
+          description: Heat system not found
+
+    put:
+      summary: Update an existing heat system
+      operationId: updateHeatSystem
+      tags:
+        - HeatSystems
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: houseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HeatSystemCreate'
+      responses:
+        '200':
+          description: Heat system updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeatSystem'
+        '404':
+          description: Heat system not found
+
+    delete:
+      summary: Delete a heat system by houseId
+      operationId: deleteHeatSystem
+      tags:
+        - HeatSystems
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: houseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Heat system deleted
+        '404':
+          description: Heat system not found
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    HeatSystem:
+      type: object
+      properties:
+        houseId:
+          type: integer
+          example: 101
+        name:
+          type: string
+          example: Central Boiler
+    HeatSystemCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: Central Boiler

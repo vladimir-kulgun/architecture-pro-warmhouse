@@ -1,0 +1,60 @@
+openapi: 3.0.1
+info:
+  title: House Temperature API
+  version: 1.0.0
+  description: API to set temperature for a specific house
+servers:
+  - url: https://api.example.com
+paths:
+  /api/houses/{id}/temperature/:
+    put:
+      summary: Set temperature for a house
+      description: Update or set the temperature for the specified house by ID.
+      tags:
+        - Houses
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Unique identifier of the house
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                temperature:
+                  type: integer
+                  example: 22
+              required:
+                - temperature
+      responses:
+        '200':
+          description: Temperature updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  houseId:
+                    type: integer
+                  temperature:
+                    type: integer
+                  updatedAt:
+                    type: string
+                    format: date-time
+        '400':
+          description: Invalid input data
+        '404':
+          description: House not found
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
