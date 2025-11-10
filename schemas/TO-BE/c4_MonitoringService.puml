@@ -5,10 +5,7 @@ package api {
   package DTO {
     enum SystemOfMeasure {
       celcius,
-      farenheit,
-      percent,
-      grammPerQubicMeter,
-      kiloGramPerQubicMeter
+      farenheit
       }
 
     struct Measurement {
@@ -21,18 +18,10 @@ package api {
       + getLatest(sensorId: guid, systemOfMeasure = celcius): Measurement
       + getHistory(sensorId: guid, systemOfMeasure = celcius, startDate: DateTime, endDate: DateTime): Measurement[]
   }
-
-  class HumidityController {
-      + getLatest(sensorId: guid, systemOfMeasure = percent): Measurement
-      + getHistory(sensorId: guid, systemOfMeasure = percent, startDate: DateTime, endDate: DateTime): Measurement[]
-  }
 }
 
 package busnes_layer {
   class TemperatureService {
-    getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Measurement[]
-  }
-  class HumidityService {
     getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Measurement[]
   }
 }
@@ -47,9 +36,6 @@ package access_layer {
   class TemperatureRepository {
     + getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Measurement[]
   }
-  class HumidityRepository {
-    + getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Measurement[]
-  }
 }
 
 Lay_D(api, busnes_layer)
@@ -59,11 +45,7 @@ Lay_D(busnes_layer, access_layer)
 TemperatureController -> TemperatureService: has >
 TemperatureService -> TemperatureRepository: has >
 
-HumidityController -> HumidityService: has >
-HumidityService -> HumidityRepository: has >
-
 MeasurementHandler -> TemperatureRepository: has >
-MeasurementHandler -> HumidityRepository: has >
 
 
 @enduml
