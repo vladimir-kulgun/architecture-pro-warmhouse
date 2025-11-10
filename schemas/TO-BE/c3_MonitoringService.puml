@@ -33,7 +33,7 @@ System_Boundary(be, "Мониторинг") {
 }
 
 Rel(temperatureController, temperatureService, "")
-Rel(temperatureController, repository1, "")
+Rel(temperatureService, repository1, "")
 
 Rel(humidityController, humidityService, "")
 Rel(humidityService, repository1, "")

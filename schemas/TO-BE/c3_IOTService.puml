@@ -4,12 +4,12 @@
 System_Boundary(be, "Умные вещи") {
   System_Boundary(iotService, "IOTService") {
     System_Boundary(api, "Api Layer") {
-      Container(adminController, "Admin Controller", "Подключение умного устройства к системы")
+      Container(deviceController, "Device Controller", "Подключение умного устройства к системы")
       Container(controlController, "Control Controller", "Управление умным устройством")
     }
 
     System_Boundary(busnessLogic, "Business Logic") {
-      Container(adminService, "Admin Service", "")
+      Container(deviceService, "Device Service", "")
       Container(controlService, "Control Service", "")
     }
 
@@ -31,10 +31,10 @@ System_Ext(iot_lamp, "Лампочка", "")
 System_Ext(iot_temperature_sensor, "Датчик температуры", "")
 ContainerQueue(que_kafka, "Очередь", "")
 
-Rel(adminController, adminService, "")
-Rel(adminService, repository, "")
-Rel(adminService, lampClient, "")
-Rel(adminService, temperatureClient, "")
+Rel(deviceController, deviceService, "")
+Rel(deviceService, repository, "")
+Rel(deviceService, lampClient, "")
+Rel(deviceService, temperatureClient, "")
 
 Rel(controlController, controlService, "")
 Rel(controlService, repository, "")
