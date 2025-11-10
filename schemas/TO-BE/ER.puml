@@ -1,0 +1,67 @@
+@startuml
+entity User {
+    + id: guid
+    createdAt: DateTime,
+    lastUpdatedAt: DateTime
+    --
+    login: string
+    name: string
+}
+
+entity House {
+    + id: guid
+    createdAt: DateTime,
+    lastUpdatedAt: DateTime
+    --
+    userId: guid
+    name: string
+    address: string
+}
+
+entity Device {
+    + id: guid
+    createdAt: DateTime,
+    lastUpdatedAt: DateTime
+    --
+    deviceTypeId: guid
+    houseId: guid
+    deviceStatusId: guid
+    serialNumber: string
+}
+
+entity DeviceType {
+    id: guid
+    name: string
+}
+
+entity DeviceStatus {
+    id:
+    name: string
+}
+
+entity Module {
+    + id: guid
+    createdAt: DateTime,
+    lastUpdatedAt: DateTime
+    --
+    userId: guid
+}
+
+entity TelemetryData {
+    + id: guid
+    createdAt: DateTime,
+    --
+    deviceId: guid
+}
+
+
+User "1" -- "0..*" House: userId
+House "1" -- "0..*" Device: houseId
+
+DeviceType "1" -- "1" Device: deviceTypeId
+DeviceStatus "1" -- "1" Device: deviceStatusId
+Device "1" -- "0.." TelemetryData: deviceId
+
+User "1" -- "0..*" Module: userId
+
+@enduml
