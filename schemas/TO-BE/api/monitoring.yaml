@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: Device Data API
+  version: 1.0.0
+  description: API for reading device data (latest and historical)
+servers:
+  - url: https://api.example.com
+security:
+  - BearerAuth: []  # Apply bearer auth globally
+paths:
+  /api/devices/{deviceId}/data/now:
+    get:
+      summary: Get the latest data point for a device
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: ID of the device
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Latest device data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceData'
+        '404':
+          description: Device not found
+
+  /api/devices/{deviceId}/data/history:
+    get:
+      summary: Get historical data for a device starting from a timestamp
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: ID of the device
+          schema:
+            type: string
+        - name: start
+          in: query
+          required: true
+          description: Start timestamp for historical data (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+        - name: temperature
+          in: query
+          required: false
+          description: Filter by temperature
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Historical device data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceData'
+        '404':
+          description: Device not found
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # optional, can be any token format
+  schemas:
+    DeviceData:
+      type: object
+      properties:
+        id:
+          type: string
+        deviceId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        temperature:
+          type: number
+        status:
+          type: string
+      required:
+        - id
+        - deviceId
+        - timestamp
+        - temperature

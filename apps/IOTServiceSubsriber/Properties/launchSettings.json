@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "IOTServiceSubsriber": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

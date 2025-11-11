@@ -1,0 +1,68 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(engineer, "Специалист по установке")
+Person(user, "Пользователь")
+
+
+  System_Boundary(front_end, "Пользовательский интерфейс") {
+    Container(warm_house_fe, "Установка отопления", "WebApp")
+    Container(heating_fe, "Отопление", "Mobile/SPA")
+
+    Container(iot_fe, "Умные вещи", "Mobile/SPA")
+    Container(monitoring_fe, "Мониторинг", "Mobile/SPA")
+    Container(script_fe, "Программирование", "Mobile/SPA")
+  }
+  
+  System_Boundary(heating_be, "Отопление") {
+    Container(heating_service, "HeatingService", "")
+    ContainerDb(heating_db, "Настройки отопления", "PostgresSQL")
+  }
+
+  System_Boundary(iot_be, "Умные вещи") {
+    Container(iot_service, "IOTService", "")
+    ContainerDb(iot_db, "Настройки умных вещей.", "PostgresSQL")
+  }
+
+  ContainerQueue(iot_que, "IoTSensorData", "Kafka")
+
+  System_Boundary(monitoring_be, "Мониторирнг") {
+    Container(monitoring_service, "MonitoringService", "")
+    Container(monitoring_consumer, "MonitoringConsumer", "")
+    ContainerDb(monitoring_db, "Архив показаний.", "PostgresSQL")
+  }
+
+  System_Boundary(script_be, "Программирование") {
+    Container(script_service, "ScriptService", "")
+    ContainerDb(script_db, "Хранилище скриптов.", "PostgresSQL")
+  }
+
+Rel(user, heating_fe, "Управление отоплением")
+Rel(engineer, warm_house_fe, "Подключение системы отопления")
+System_Ext(heating_system, "Система отопления", "Выполняет отопительную функцию")
+Rel(heating_fe, heating_service, "")
+Rel(warm_house_fe, heating_service, "")
+Rel(heating_service, heating_db, "")
+Rel(heating_service, heating_system, "Управление")
+
+Rel(user, iot_fe, "Управление умными вещами")
+System_Ext(iot, "Датчики: температуры, влажности. Умные вещи: лампочки, ворота", "")
+Rel(iot_fe, iot_service, "")
+Rel(iot_service, iot_db, "")
+Rel(iot_service, iot_que, "Запись данных в очередь")
+Rel(iot_service, iot, "Управление")
+Rel(iot, iot_service, "Отправка данных")
+
+Rel(user, monitoring_fe, "Мониторинг показаний")
+Rel(monitoring_fe, monitoring_service, "")
+Rel(monitoring_service, monitoring_db, "")
+Rel(monitoring_consumer, iot_que, "Обработка данных из очереди")
+Rel(monitoring_consumer, monitoring_db, "")
+
+Rel(user, script_fe, "Программирование системы для управления различными модулями")
+Rel(script_fe, script_service, "")
+Rel(script_service, heating_service, "")
+Rel(script_service, iot_service, "")
+Rel(script_service, script_db, "")
+
+@enduml

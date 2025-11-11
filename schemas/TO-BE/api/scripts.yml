@@ -1,0 +1,196 @@
+openapi: 3.0.1
+info:
+  title: Scripts API
+  version: 1.0.0
+  description: API for managing and executing scripts
+servers:
+  - url: https://api.example.com
+security:
+  - bearerAuth: []   # corrected name to match components
+
+paths:
+  /api/scripts:
+    get:
+      summary: Get all scripts
+      operationId: getAllScripts
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of scripts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Script'
+    post:
+      summary: Create a new script
+      operationId: createScript
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScriptCreate'
+      responses:
+        '201':
+          description: Script created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Script'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+
+  /api/scripts/{id}:
+    get:
+      summary: Get a script by ID
+      operationId: getScriptById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Script ID
+      responses:
+        '200':
+          description: Script found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Script'
+        '404':
+          description: Script not found
+        '401':
+          description: Unauthorized
+    put:
+      summary: Update a script by ID
+      operationId: updateScript
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScriptUpdate'
+      responses:
+        '200':
+          description: Script updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Script'
+        '400':
+          description: Invalid request
+        '404':
+          description: Script not found
+        '401':
+          description: Unauthorized
+
+  /api/scripts/{id}/run:
+    post:
+      summary: Execute a script by ID
+      operationId: runScript
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              example:
+                param1: "value1"
+                param2: 42
+      responses:
+        '200':
+          description: Script executed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  result:
+                    type: object
+                    additionalProperties: true
+                    example:
+                      output: "Script completed"
+        '404':
+          description: Script not found
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Script:
+      type: object
+      properties:
+        id:
+          type: string
+          example: script-001
+        body:
+          type: object
+          additionalProperties: true
+          example:
+            key: value
+            steps:
+              - initialize
+              - run
+              - cleanup
+    ScriptCreate:
+      type: object
+      required: [id, body]
+      properties:
+        id:
+          type: string
+          example: script-001
+        body:
+          type: object
+          additionalProperties: true
+          example:
+            step1: start
+            step2: end
+    ScriptUpdate:
+      type: object
+      properties:
+        body:
+          type: object
+          additionalProperties: true
+          example:
+            step1: modified
+            step2: finalize
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

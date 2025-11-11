@@ -1,0 +1,51 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+System_Boundary(be, "Умные вещи") {
+  System_Boundary(iotService, "IOTService") {
+    System_Boundary(api, "Api Layer") {
+      Container(deviceController, "Device Controller", "Подключение умного устройства к системы")
+      Container(controlController, "Control Controller", "Управление умным устройством")
+    }
+
+    System_Boundary(busnessLogic, "Business Logic") {
+      Container(deviceService, "Device Service", "")
+      Container(controlService, "Control Service", "")
+    }
+
+    System_Boundary(access, "Access Layer") {
+      Container(lampClient, "Lamp Client", "Логика доступа к лампочке")
+      Container(temperatureClient, "Temperature Client", "Логика доступа к датчику температуры")
+      Container(repository, "Repository", "Логика доступа к данным")
+    }
+  }
+  ContainerDb(db, "Настройки умных устройств", "PostgresSQL")
+
+  System_Boundary(iotServiceSubscriber, "IOTServiceSubscriber") {
+    System_Boundary(handlerLayer, "Handler") {
+      Container(dataHandler, "DataHandler", "")
+  }
+}
+
+System_Ext(iot_lamp, "Лампочка", "")
+System_Ext(iot_temperature_sensor, "Датчик температуры", "")
+ContainerQueue(que_kafka, "Очередь", "")
+
+Rel(deviceController, deviceService, "")
+Rel(deviceService, repository, "")
+Rel(deviceService, lampClient, "")
+Rel(deviceService, temperatureClient, "")
+
+Rel(controlController, controlService, "")
+Rel(controlService, repository, "")
+Rel(controlService, lampClient, "")
+Rel(controlService, temperatureClient, "")
+
+Rel(repository, db, "")
+Rel(lampClient, iot_lamp, "")
+Rel(temperatureClient, iot_temperature_sensor, "")
+
+Rel(iot_temperature_sensor, dataHandler, "Отправляет данные")
+Rel(dataHandler, que_kafka, "Пишет в очередь")
+
+@enduml

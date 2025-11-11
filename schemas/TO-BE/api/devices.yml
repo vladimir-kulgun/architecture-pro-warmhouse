@@ -1,0 +1,139 @@
+openapi: 3.0.3
+info:
+  title: Devices API
+  version: 1.0.0
+  description: CRUD API for managing devices
+servers:
+  - url: https://api.example.com
+security:
+  - BearerAuth: []
+paths:
+  /devices:
+    get:
+      summary: Get all devices
+      tags:
+        - Devices
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of devices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+    post:
+      summary: Create a new device
+      tags:
+        - Devices
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+      responses:
+        '201':
+          description: Device created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '409':
+          description: Device with the same ID already exists
+  /devices/{id}:
+    get:
+      summary: Get device by ID
+      tags:
+        - Devices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Device ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Device found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '404':
+          description: Device not found
+    put:
+      summary: Update a device
+      tags:
+        - Devices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Device ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+      responses:
+        '200':
+          description: Device updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '404':
+          description: Device not found
+    delete:
+      summary: Delete a device
+      tags:
+        - Devices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Device ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Device deleted
+        '404':
+          description: Device not found
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Device:
+      type: object
+      properties:
+        id:
+          type: integer
+        serial_number:
+          type: string
+        houseId:
+          type: integer
+        status:
+          type: string
+      required:
+        - id
+        - serial_number
+        - houseId
+        - status

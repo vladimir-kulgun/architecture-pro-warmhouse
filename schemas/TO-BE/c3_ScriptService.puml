@@ -1,0 +1,55 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+System_Boundary(be, "Программирование") {
+  System_Boundary(service1, "ScriptService") {
+    System_Boundary(api, "Api Layer") {
+      Container(commandController, "Command Controller", "Команды/действия, триггеры/условия")
+      Container(scriptEditController, "Script Controller", "Редактирование программ/скриптов")
+    }
+
+    System_Boundary(busnessLogic1, "Business Logic") {
+      Container(commandService, "Command Service", "")
+      Container(scriptEditService, "Script Edit Service", "")
+    }
+
+    System_Boundary(access1, "Access Layer") {
+      Container(repository1, "Repository", "Логика доступа к данным")
+    }
+  }
+
+  System_Boundary(service2, "ScriptRunnerService") {
+    System_Boundary(busnessLogic2, "Business Logic") {
+      Container(scriptRunnerService, "Script Runner Service", "")
+    }
+
+    System_Boundary(access2, "Access Layer") {
+      Container(repository2, "Repository", "Логика доступа к данным")
+    }
+  }
+
+  ContainerDb(db, "Хранилище скриптов", "PostgresSQL")
+}
+
+Container(monitoringService, "MonitoringService", "Мониторинг")
+Container(iotService, "iotService", "Умные вещи")
+Container(heatingService, "HeatingService", "Отопление")
+Rel(scriptRunnerService, monitoringService, "Отслеживает показания датчиков, по условиям триггеров")
+Rel(scriptRunnerService, iotService, "Управляет умными вещами")
+Rel(scriptRunnerService, heatingService, "Управляет отоплением")
+
+Rel(commandController, commandService, "")
+Rel(commandService, repository1, "")
+
+Rel(scriptEditController, scriptEditService, "")
+Rel(scriptEditService, repository1, "")
+
+Rel(repository1, db, "")
+
+Rel(scriptRunnerService, repository2, "")
+
+Rel(repository2, db, "")
+
+
+
+@enduml

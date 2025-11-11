@@ -1,0 +1,52 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+package api {
+  package DTO {
+    enum TemperatureSystemOfMeasure {
+      celcius,
+      farenheit
+      }
+
+    struct Temperature {
+      value: double
+      systemOfMeasure: SystemOfMeasure
+      dateTime: DateTime
+    }
+  }
+  
+  class TemperatureController {
+      + getLatest(sensorId: guid, systemOfMeasure = celcius): Temperature
+      + getHistory(sensorId: guid, systemOfMeasure = celcius, startDate: DateTime, endDate: DateTime): Temperature[]
+  }
+}
+
+package busnes_layer {
+  class TemperatureService {
+    getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Temperature[]
+  }
+}
+
+package handlers {
+  class MeasurementHandler {
+    + handle(json: string)
+  }
+}
+
+package access_layer {
+  class TemperatureRepository {
+    + getPage(sensorId: guid, systemOfMeasure = celcius, pageIndex = 0, pageCount = 10): Temperature[]
+  }
+}
+
+Lay_D(api, busnes_layer)
+Lay_D(api, handlers)
+Lay_D(busnes_layer, access_layer)
+
+TemperatureController -> TemperatureService: has >
+TemperatureService -> TemperatureRepository: has >
+
+MeasurementHandler -> TemperatureRepository: has >
+
+
+@enduml
